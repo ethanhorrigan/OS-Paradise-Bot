@@ -1,0 +1,1 @@
+worker: python3 osp_bot.py
