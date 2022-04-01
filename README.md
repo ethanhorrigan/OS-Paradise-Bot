@@ -12,7 +12,6 @@
 - Money System
 - Get Username History
 
-
 ## tl;dr
 This is a code template that will help you build a Discord bot in a quick and elegant way. You just have to tweak a few settings to your liking, add your commands, and you'll be ready to go.
 
