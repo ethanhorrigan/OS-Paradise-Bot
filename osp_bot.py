@@ -3,8 +3,8 @@ import sys
 import discord
 from discord.ext import tasks
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from src import settings, message_handler, Competition
-from events.base_event import BaseEvent
+from src import settings, message_handler
+from src.comp import Competition
 import src.database as db
 
 # Set to remember if the bot is already running, since on_ready may be called
@@ -42,18 +42,6 @@ def main():
             await client.change_presence(
                 activity=discord.Game(name=settings.NOW_PLAYING))
         print('Logged in!', flush=True)
-
-        # Load all events
-        print('Loading events...', flush=True)
-        n_ev = 0
-        for eve in BaseEvent.__subclasses__():
-            print(eve)
-            event = eve()
-            sched.add_job(event.run, 'interval', (client,),
-                          minutes=event.interval_minutes)
-            n_ev += 1
-        sched.start()
-        print(f'{n_ev} events loaded', flush=True)
 
         @tasks.loop(hours=1.0)
         async def display_current_comp_leaderboard_event():
