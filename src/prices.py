@@ -14,7 +14,6 @@ class Mapping:
         self.name = name
         self.icon = icon
 
-
 class Prices:
     '''Retrieve prices data from OSRS Wiki'''
     OSRS_WIKI_ENPOINT = 'http://prices.runescape.wiki/api/v1/osrs/latest?'
@@ -73,7 +72,7 @@ class Prices:
     @staticmethod
     def round_time(date_time: dt.timedelta):
         human_time = format_timespan(date_time.total_seconds())
-        return date_time
+        return human_time
 
     def get_threshold(self, threshold):
         pass
@@ -86,31 +85,26 @@ class Prices:
         try:
             request = requests.get(self.OSRS_WIKI_ENPOINT)
             response = request.json()['data']
-            for key, value in response.items():
-                low_time = value['lowTime']
-                low_price = value['low']
-                high_time = value['highTime']
-                high_price = value['high']
-                if low_price is not None:
-                    if low_price < self.thresholds['2.5m']:
-                        high_time = dt.datetime.fromtimestamp(high_time)
-                        low_time = dt.datetime.fromtimestamp(low_time)
-                        now = dt.datetime.now()
-                        high_diff = self.round_time(now - high_time)
-                        low_diff = self.round_time(now - low_time)
-                        if (now - low_time).total_seconds() < 120:
-                            print(f'Item: {self.get_icon(key)} ItemID: {key} \
-                                Last updated {high_diff}')
-                            print(
-                                f'high price: {high_price} \
-                                    low price: {low_price}')
-                            print(f'high diff: {high_diff} \
-                                low diff: {low_diff}')
-
         except requests.exceptions.RequestException as err:
             print(err)
         return response
 
-
 prices = Prices()
-prices.get_latest()
+latest = prices.get_latest()
+
+# create a function to print all keys in a dictionary
+def print_dict(dictionary):
+    for key in dictionary:
+        print(key, dictionary[key])
+
+# get items from a dict within a dict
+def get_items(dictionary, key):
+    for item in dictionary:
+        if item == key:
+            return dictionary[item]
+
+print(get_items(latest, 'high'))
+
+
+
+
