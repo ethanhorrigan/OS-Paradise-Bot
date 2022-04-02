@@ -1,7 +1,7 @@
 '''Discord Command: Setting Discord name with RSN'''
 from commands.base_command import BaseCommand
-from settings import ALL_USERS, SLEEP
-from wom import wom_lookup_user
+from src.settings import ALL_USERS, SLEEP
+from src.wom import wom_lookup_user
 
 class SetRsn(BaseCommand):
     '''

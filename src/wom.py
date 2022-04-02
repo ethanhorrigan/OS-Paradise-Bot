@@ -1,9 +1,7 @@
 '''Wise old man module'''
 import database.database as db
-from settings import GROUP_ID, wom_name_url, WOM_URL
+from src import settings, points
 import requests
-from src import points
-
 
 def wom_lookup_user(user):
     """Retrieve all user details from wise old man"""
@@ -21,7 +19,7 @@ def wom_lookup_user(user):
 def get_original_name(display_name):
     og_name = ''
     try:
-        r = requests.get(wom_name_url(display_name)).json()
+        r = requests.get(settings.wom_name_url(display_name)).json()
         if len(r) > 0:
             length = len(r) - 1
         else:
@@ -34,7 +32,7 @@ def get_original_name(display_name):
 
 
 def get_all_display_names(display_name):
-    r = requests.get(wom_name_url(display_name)).json()
+    r = requests.get(settings.wom_name_url(display_name)).json()
     a = []
     for i in range(len(r)):
         old_name = r[i]['oldName']
@@ -45,7 +43,8 @@ def get_all_display_names(display_name):
 
 def get_all_competitions():
     wom_group_url = 'https://api.wiseoldman.net/groups/'
-    return requests.get(wom_group_url + GROUP_ID + '/competitions').json()
+    return requests.get(wom_group_url + settings.GROUP_ID \
+        + '/competitions').json()
 
 
 def get_all_ids():
@@ -62,7 +61,7 @@ def get_leaderboards_all_comps():
     for i in range(len(ids)):
         for j in range(3):
             print('get_leaderboards_all_comps Making request to WOM')
-            result = requests.get(WOM_URL + str(ids[i])).json()
+            result = requests.get(settings.WOM_URL + str(ids[i])).json()
             name = result['participants'][j]['displayName']
             # comp = (result['metric']).title()
             if db.check_if_user_exists_in_rankings(name):

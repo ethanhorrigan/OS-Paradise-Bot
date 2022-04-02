@@ -1,5 +1,5 @@
 '''Pets command module'''
-from settings import ALL_USERS
+from src.settings import ALL_USERS
 from commands.base_command import BaseCommand
 import database.database as db
 import discord

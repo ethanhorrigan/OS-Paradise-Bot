@@ -31,8 +31,8 @@ def create_table_payments():
     """Create payments table"""
     try:
         cursor.execute('''DROP TABLE IF EXISTS payments''')
-        cursor.execute('''CREATE TABLE payments \
-            (mod text, recipient text, amount text, date text, imageUrl text)''')
+        cursor.execute('''CREATE TABLE payments (mod text, recipient text, \
+            amount text, date text, imageUrl text)''')
     except connection.error:
         print(f'error writing to database: {connection.error}')
     finally:
@@ -52,7 +52,8 @@ def create_table_members():
         connection.commit()
 
 
-def insert_members(display_name, top_role, user_id, permissions, roles, content, consultant):
+def insert_members(display_name, top_role, user_id, permissions, roles, \
+    content, consultant):
     """Insert or replace new member"""
     try:
         sql = 'INSERT OR REPLACE INTO members VALUES (?, ?, ?, ?, ?, ?, ?)'
@@ -125,7 +126,8 @@ def get_user_id_by_display_name(display_name):
 def update_mentor(display_name, content, consultant):
     """Update Mentor information"""
     try:
-        sql = 'UPDATE members SET content = ?, consultant = ? where display_name = ?'
+        sql = 'UPDATE members SET content = ?, consultant = ? \
+            where display_name = ?'
         args = content, consultant, display_name
         cursor.execute(sql, args)
     except connection.error:
@@ -133,23 +135,23 @@ def update_mentor(display_name, content, consultant):
     finally:
         connection.commit()
 
-def update_member_nickname(_user_id, after):
+def update_member_nickname(user_id, after):
     """Update Mentor information"""
     try:
         sql = 'UPDATE members SET display_name = ? WHERE id = ?'
-        args = f'{after}', f'{_user_id}'
+        args = f'{after}', f'{user_id}'
         cursor.execute(sql, args)
     except connection.error:
         print(f'error writing to database: {connection.error}')
     finally:
-        print(f'Nickname updated {after} for {_user_id}')
+        print(f'Nickname updated {after} for {user_id}')
         connection.commit()
 
-def update_member_roles(_user_id, new_roles):
+def update_member_roles(user_id, new_roles):
     """Update Mentor information"""
     try:
         sql = 'UPDATE members SET roles = ? WHERE id = ?'
-        args = f'{new_roles}', f'{_user_id}'
+        args = f'{new_roles}', f'{user_id}'
         cursor.execute(sql, args)
     except connection.error:
         print(f'error writing to database: {connection.error}')
@@ -159,7 +161,8 @@ def update_member_roles(_user_id, new_roles):
 def get_mentors_for_content():
     """Get list of mentors for given content_type"""
     try:
-        sql = 'SELECT display_name, content FROM members WHERE roles LIKE "%mentor%"'
+        sql = 'SELECT display_name, content FROM members WHERE roles LIKE \
+            "%mentor%"'
         cursor.execute(sql)
     except (connection.error, sql.ProgrammingError, sql.connection) as err:
         print(f'error writing to database: {err}')
@@ -170,7 +173,7 @@ def get_mentors_for_content():
 def get_member_permissions(display_name):
     """Get discord permissions for given display_name"""
     try:
-        sql = "SELECT permissions FROM members WHERE display_name=?"
+        sql = 'SELECT permissions FROM members WHERE display_name=?'
         args = (display_name,)
         cursor.execute(sql, args)
     except connection.error:
@@ -202,7 +205,7 @@ def insert_payments(mod, recipient, amount, date, image_url):
 
 def check_if_user_exists_in_rankings(name):
     """Check if user exists in rankings"""
-    sql = "SELECT count(*) FROM rankings WHERE name=?"
+    sql = 'SELECT count(*) FROM rankings WHERE name=?'
     args = (name,)
     cursor.execute(sql, args)
     if cursor.fetchone()[0] == 0:
@@ -213,7 +216,7 @@ def check_if_user_exists_in_rankings(name):
 def insert_rankings(name, points):
     """Insert a new entry into rankings"""
     try:
-        sql = "INSERT INTO rankings VALUES (?, ?)"
+        sql = 'INSERT INTO rankings VALUES (?, ?)'
         args = (name, points)
         cursor.execute(sql, args)
     except connection.error:
@@ -224,7 +227,7 @@ def insert_rankings(name, points):
 def update_rankings(name, points):
     """Update rankings"""
     try:
-        sql = "UPDATE rankings SET points = points + ? WHERE name = ?"
+        sql = 'UPDATE rankings SET points = points + ? WHERE name = ?'
         args = (points, name)
         cursor.execute(sql, args)
     except connection.error:
@@ -238,11 +241,11 @@ def get_rankings():
 
 def insert_competitions(cur, value):
     """Insert into competitions"""
-    cur.execute("INSERT INTO competitions VALUES (?)", [value])
+    cur.execute('INSERT INTO competitions VALUES (?)', [value])
 
 def get_token():
     """Retrieve discord api token"""
-    return cursor.execute("SELECT token from discord").fetchall()[0][0]
+    return cursor.execute('SELECT token from discord').fetchall()[0][0]
 
 def get_current_competition():
     """Get current ongoing competition"""
@@ -250,7 +253,7 @@ def get_current_competition():
 
 def set_current_competition(value):
     """Set current competition"""
-    sql = "UPDATE competitions SET current_comp = ? WHERE current_comp = ?"
+    sql = 'UPDATE competitions SET current_comp = ? WHERE current_comp = ?'
     args = (value, get_current_competition())
     cursor.execute(sql, args)
 

@@ -1,13 +1,14 @@
-
+'''Prices module'''
 from humanfriendly import format_timespan
 import requests
 import datetime as dt
-import sys
-sys.path.append('../')
 import database.database as db
 
 class Mapping:
-
+    '''
+    Mapping class
+    Stores item_id, name, icon from OSRS item database
+    '''
     def __init__(self, item_id, name, icon):
         self.item_id = item_id
         self.name = name
@@ -15,6 +16,7 @@ class Mapping:
 
 
 class Prices:
+    '''Retrieve prices data from OSRS Wiki'''
     OSRS_WIKI_ENPOINT = 'http://prices.runescape.wiki/api/v1/osrs/latest?'
     OSRS_MAPPING_ENPOINT = 'https://prices.runescape.wiki/api/v1/osrs/mapping'
     thresholds = {
@@ -90,19 +92,20 @@ class Prices:
                 high_time = value['highTime']
                 high_price = value['high']
                 if low_price is not None:
-                    if (low_price > self.thresholds['2.5m'] and
-                            low_price < self.thresholds['5m']):
+                    if low_price < self.thresholds['2.5m']:
                         high_time = dt.datetime.fromtimestamp(high_time)
                         low_time = dt.datetime.fromtimestamp(low_time)
                         now = dt.datetime.now()
                         high_diff = self.round_time(now - high_time)
                         low_diff = self.round_time(now - low_time)
                         if (now - low_time).total_seconds() < 120:
+                            print(f'Item: {self.get_icon(key)} ItemID: {key} \
+                                Last updated {high_diff}')
                             print(
-                                f'Item: {self.get_icon(key)} ItemID: {key} Last updated {high_diff}')
-                            print(
-                                f'high price: {high_price} low price: {low_price}')
-                            print(f'high diff: {high_diff} low diff: {low_diff}')
+                                f'high price: {high_price} \
+                                    low price: {low_price}')
+                            print(f'high diff: {high_diff} \
+                                low diff: {low_diff}')
 
         except requests.exceptions.RequestException as err:
             print(err)

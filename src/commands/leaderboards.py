@@ -1,7 +1,7 @@
 '''Leaderboards command module'''
 from commands.base_command import BaseCommand
 from src.comp import Competition
-from settings import ALL_USERS
+from src.settings import ALL_USERS
 
 
 class Leaderboards(BaseCommand):

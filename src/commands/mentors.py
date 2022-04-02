@@ -1,6 +1,6 @@
 """Get all Users in Discord Command"""
 import discord
-from settings import ALL_USERS
+from src.settings import ALL_USERS
 from src.mentor_roles import MentorRoles
 from commands.base_command import BaseCommand
 import database.database as db
