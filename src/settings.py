@@ -4,7 +4,8 @@ import os
 import calendar
 import numbers
 import inflect
-import database.database as db
+
+import src.database.database as db
 
 inflectEngine = inflect.engine()
 
