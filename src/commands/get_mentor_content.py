@@ -1,8 +1,8 @@
 """Get all Users in Discord Command"""
+from src.commands.base_command import BaseCommand
 from src.settings import ALL_USERS
 from src.mentor_roles import MentorRoles
-from commands.base_command import BaseCommand
-import database.database as db
+import src.database.database as db
 
 class GetMentor(BaseCommand):
     """Get users class"""

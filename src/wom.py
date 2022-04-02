@@ -1,5 +1,5 @@
 '''Wise old man module'''
-import database.database as db
+from src.database import database
 from src import settings, points
 import requests
 
@@ -57,15 +57,15 @@ def get_all_ids():
 
 def get_leaderboards_all_comps():
     ids = get_all_ids()
-    db.create_table_rankings()
+    database.create_table_rankings()
     for i in range(len(ids)):
         for j in range(3):
             print('get_leaderboards_all_comps Making request to WOM')
             result = requests.get(settings.WOM_URL + str(ids[i])).json()
             name = result['participants'][j]['displayName']
             # comp = (result['metric']).title()
-            if db.check_if_user_exists_in_rankings(name):
-                db.update_rankings(name, points.get_points(j))
+            if database.check_if_user_exists_in_rankings(name):
+                database.update_rankings(name, points.get_points(j))
             else:
-                db.insert_rankings(str(name), points.get_points(j))
+                database.insert_rankings(str(name), points.get_points(j))
             print(f'{j} {name}')

@@ -1,7 +1,7 @@
 '''Display commands module'''
-from commands.base_command import BaseCommand
-from src.settings import ALL_USERS, TEST_COMMAND, MOD
-from src.message_handler import COMMAND_HANDLERS
+
+from src.commands.base_command import BaseCommand
+from src.settings import ALL_USERS, MOD, TEST_COMMAND
 
 
 class Commands(BaseCommand):
@@ -13,6 +13,7 @@ class Commands(BaseCommand):
         super().__init__(description, params, ALL_USERS)
 
     async def handle(self, params, message, client):
+        from src.message_handler import COMMAND_HANDLERS
         msg = message.author.mention + "\n"
 
         # Displays all descriptions, sorted alphabetically by command name

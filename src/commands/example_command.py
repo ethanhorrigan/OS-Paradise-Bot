@@ -1,5 +1,5 @@
 '''Example command module'''
-from commands.base_command  import BaseCommand
+from src.commands.base_command import BaseCommand
 from src.utils                  import get_emoji
 from random                 import randint
 from src.settings               import TEST_COMMAND

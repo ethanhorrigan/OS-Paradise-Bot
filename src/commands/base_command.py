@@ -1,10 +1,9 @@
 '''Base command module'''
-import src.settings as settings
-
+from src import settings
 
 
 class BaseCommand:
-    '''Handles cmmand functionality'''
+    '''Handles command functionality'''
 
     def __init__(self, description, params, role_tag):
         self.name = type(self).__name__.lower()

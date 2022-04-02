@@ -17,7 +17,8 @@ DATABASE = 'resources/data.db'
 GROUP_ID = '332'
 CODE_BLOCK = '```'
 # The bot token. Keep this secret!
-BOT_TOKEN = os.environ.get('DISCORD_KEY', None)
+BOT_TOKEN = os.environ.get('DISCORD_KEY', \
+    'ODkxNzc4NTcyMTk1MzM2MTky.YVDThA.JFbSUN8OgJmuZB9KovdSpOqwlvA')
 # The now playing game. Set this to anything false-y ("", None) to disable it
 NOW_PLAYING = COMMAND_PREFIX + ' commands'
 # Base directory. Feel free to use it if you want.

@@ -1,7 +1,7 @@
 '''Pets command module'''
 from src.settings import ALL_USERS
-from commands.base_command import BaseCommand
-import database.database as db
+from src.commands.base_command import BaseCommand
+import src.database.database as db
 import discord
 from random import randint
 

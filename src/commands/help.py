@@ -1,6 +1,6 @@
 '''Help command module'''
 from src.settings import ALL_USERS
-from commands.base_command import BaseCommand
+from src.commands.base_command import BaseCommand
 
 class Help(BaseCommand):
 

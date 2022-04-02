@@ -1,7 +1,7 @@
 '''Pay module'''
 from src.settings import get_date_now, MOD, get_permissions
-from commands.base_command  import BaseCommand
-import database.database as db
+from src.commands.base_command  import BaseCommand
+import src.database.database as db
 
 class Pay(BaseCommand):
     '''Pay command for SOTW/BOTW payments'''

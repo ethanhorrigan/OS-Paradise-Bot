@@ -1,10 +1,10 @@
 '''Message handler module'''
-
+from src.commands import *
 from src import settings
-from src.commands.base_command import BaseCommand
+from src.commands import base_command
 
 COMMAND_HANDLERS = {c.__name__.lower(): c()
-                    for c in BaseCommand.__subclasses__()}
+                    for c in base_command.BaseCommand.__subclasses__()}
 
 async def handle_command(command, args, message, bot_client):
     if command not in COMMAND_HANDLERS:

@@ -1,6 +1,8 @@
 '''Checkname module'''
-from commands.base_command  import BaseCommand
+
+from src.commands.base_command import BaseCommand
 from src.settings import ALL_USERS
+
 
 class CheckName(BaseCommand):
     '''Handle Checkname functionality'''

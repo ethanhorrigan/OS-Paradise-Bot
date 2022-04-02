@@ -3,7 +3,7 @@ import sys
 import discord
 from discord.ext import tasks
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from src import settings, message_handler
+from src import message_handler, settings
 from src.comp import Competition
 import src.database as db
 

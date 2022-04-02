@@ -1,5 +1,5 @@
 '''Leaderboards command module'''
-from commands.base_command import BaseCommand
+from src.commands.base_command import BaseCommand
 from src.comp import Competition
 from src.settings import ALL_USERS
 
