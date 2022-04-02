@@ -1,6 +1,7 @@
 '''Message handler module'''
-from commands.base_command  import BaseCommand
+
 from src import settings
+from src.commands.base_command import BaseCommand
 
 COMMAND_HANDLERS = {c.__name__.lower(): c()
                     for c in BaseCommand.__subclasses__()}
