@@ -97,14 +97,6 @@ def print_dict(dictionary):
     for key in dictionary:
         print(key, dictionary[key])
 
-# get items from a dict within a dict
-def get_items(dictionary, key):
-    for item in dictionary:
-        if item == key:
-            return dictionary[item]
-
-print(get_items(latest, 'high'))
-
 
 
 
