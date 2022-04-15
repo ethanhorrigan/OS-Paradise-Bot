@@ -192,3 +192,32 @@ class Competition:
             if current_comp[0].time() < current_comp[1].time():
                 running = True
         return running
+
+    def get_comp_end_time(self):
+        """Return the current competition end time"""
+        try:
+            url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
+            res = str(requests.get(url).json()[0]['endsAt'])
+            date_formatted = self.format_date_time(res)
+            datetime_until = date_formatted - datetime.datetime.now()
+            now = datetime.datetime.now()
+            now = datetime.datetime(
+                now.year, now.month, now.day, now.hour, now.minute)
+        except requests.exceptions.RequestException as err:
+            print(err)
+        return datetime_until
+
+    def get_comp_start_time(self):
+        """Return the current competition start time"""
+        try:
+            url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
+            res = str(requests.get(url).json()[0]['startsAt'])
+            date_formatted = self.format_date_time(res)
+        except requests.exceptions.RequestException as err:
+            print(err)
+        return date_formatted
+
+
+c = Competition()
+print(c.get_comp_start_time())
+print(f'Now: {datetime.datetime.now()}')
