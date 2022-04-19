@@ -26,9 +26,6 @@ def main():
     intents.guilds = True
     client = discord.Client(intents=intents)
 
-    # Define event handlers for the client
-    # on_ready may be called multiple times in the event of a reconnect,
-    # hence the running flag
     @client.event
     async def on_ready():
         if this.running:
