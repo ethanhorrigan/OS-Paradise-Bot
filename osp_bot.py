@@ -115,6 +115,5 @@ def main():
 
     client.run(settings.BOT_TOKEN)
 
-
 if __name__ == '__main__':
     main()
