@@ -11,6 +11,9 @@ def wom_lookup_user(user):
     try:
         request = requests.get(url)
         response = request.json()
+        if 'message' in response:
+            print(f'{user} not found')
+            response = None
     except ValueError as err:
         print(err.__class__)
     return response

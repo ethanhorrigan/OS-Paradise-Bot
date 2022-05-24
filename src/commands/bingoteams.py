@@ -3,9 +3,11 @@ import discord
 from src.settings import ALL_USERS
 from src.mentor_roles import MentorRoles
 from src.commands.base_command import BaseCommand
-from src.bingo_names_parser import team1, team2
+import json
 
 class BingoTeams(BaseCommand):
+
+
     """Get users class"""
     all_content = [attr for attr in dir(MentorRoles)
                    if not callable(getattr(MentorRoles, attr)) and
@@ -19,6 +21,21 @@ class BingoTeams(BaseCommand):
 
     async def handle(self, params, message, client):
         """Handle command"""
+        team1 = []
+        team2 = []
+
+        with open('./team1.json', 'r') as f:
+            team1 = json.load(f)
+        print(team1)
+        for player in team1:
+            print(player)
+
+        with open('./team2.json', 'r') as f:
+            team2 = json.load(f)
+        print(team2)
+        for player in team2:
+            print(player)
+
         embed = discord.Embed(title='Bingo Teams',
                               description='Teams for Bingo!',
                               color=discord.Color.orange())

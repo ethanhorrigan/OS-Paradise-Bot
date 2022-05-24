@@ -5,7 +5,7 @@ from discord.ext import tasks
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from src import message_handler, settings
 from src.comp import Competition
-import src.database as db
+import src.database.database as db
 
 # Set to remember if the bot is already running, since on_ready may be called
 # more than once on reconnects
