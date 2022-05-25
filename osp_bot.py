@@ -138,10 +138,10 @@ def main():
                 if len(message.content) > 12 and '|' not in message.content:
                     await channel.send('Please enter a valid RSN.')
                     sleep(3)
-                    # await message.delete()
+                    await message.delete()
                 else:
                     await update_nickname(message.author, message.content)
-                    # await message.delete()
+                    await message.delete()
         if message.type == discord.message.MessageType.new_member:
             handle_new_member(message)
         text = message.content
