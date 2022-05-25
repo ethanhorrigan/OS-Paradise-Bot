@@ -1,11 +1,16 @@
 """Main module"""
+from dis import disco
+from email import message
 import sys
+from time import sleep
 import discord
+from discord.utils import get
 from discord.ext import tasks
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from src import message_handler, settings
 from src.comp import Competition
 import src.database.database as db
+from src.wom import wom_lookup_user
 
 # Set to remember if the bot is already running, since on_ready may be called
 # more than once on reconnects
@@ -62,6 +67,58 @@ def main():
                 await channel.send(embed=embed)
         display_current_comp_leaderboard_event.start()
 
+    async def update_nickname(member: discord.message, message):
+        nickname_valid = False
+
+        nickname = member.nick
+        new_rsn_channel = client.get_channel(684505358957281350)
+        rsn_log_channel = client.get_channel(685192535106125834)
+
+        embed = discord.Embed(title='RSN Update',
+                              color=discord.Color.orange())
+        role_ids = []
+        for role in member.roles:
+            role_ids.append(role.id)
+        print(role_ids)
+
+        # Account1 | Account2
+        if '|' in message:
+            users = message.split('| ')
+            main_account = users[0].strip()
+            alt_account = users[1].strip()
+            print(main_account, alt_account)
+            for u in users:
+                print(f'searching for username: {u}')
+                if wom_lookup_user(u) is not None:
+                    print(f'{message} user valid.')
+                    nickname_valid = True
+                else:
+                    nickname_valid = False
+                    return None
+        else:
+            if wom_lookup_user(message) is not None:
+                print(f'{message} user valid.')
+                nickname_valid = True
+        osp_client = client.get_guild(855060664686477373)
+        sapphire_role = osp_client.get_role(855060665093849095)
+        new_member_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
+        emerald_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
+
+
+        if settings.NEW_MEMBER_ROLE_ID in role_ids:
+            await member.remove_roles(new_member_role)
+            await member.add_roles(emerald_role)
+        if settings.SAPPHIRE_ROLE_ID in role_ids:
+            await member.remove_roles(sapphire_role)
+            await member.add_roles(emerald_role)
+
+        if nickname_valid:
+            await member.edit(nick=message)
+            embed.add_field(name='Name', value=nickname, inline=True)
+            embed.add_field(name='Changed To', value=message, inline=True)
+            await rsn_log_channel.send(embed=embed)
+        return None
+
     async def handle_new_pet_picture(message: discord.Message):
         if len(message.attachments) > 0:
             for attachment in message.attachments:
@@ -74,6 +131,16 @@ def main():
     async def common_handle_message(message: discord.Message):
         if message.channel.id == settings.PET_CHANNEL:
             await handle_new_pet_picture(message)
+        if message.channel.id == settings.NEW_MEMBER_CHANNEL:
+            channel = client.get_channel(684505358957281350)
+            if message.content != 'Please enter a valid RSN.':
+                if len(message.content) > 12 and '|' not in message.content:
+                    await channel.send('Please enter a valid RSN.')
+                    sleep(3)
+                    await message.delete()
+                else:
+                    await update_nickname(message.author, message.content)
+                    await message.delete()
         if message.type == discord.message.MessageType.new_member:
             handle_new_member(message)
         text = message.content

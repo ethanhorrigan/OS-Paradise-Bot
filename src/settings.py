@@ -17,7 +17,8 @@ DATABASE = 'resources/data.db'
 GROUP_ID = '332'
 CODE_BLOCK = '```'
 # The bot token. Keep this secret!
-BOT_TOKEN = os.environ.get('DISCORD_KEY', None)
+BOT_TOKEN = os.environ.get(
+    'DISCORD_KEY', 'ODkxNzc4NTcyMTk1MzM2MTky.GH0ghW.1aMKwl4D0ieiYvyr8um4mclnwhdW9GT_qw-AFM')
 # The now playing game. Set this to anything false-y ("", None) to disable it
 NOW_PLAYING = COMMAND_PREFIX + ' commands'
 # Base directory. Feel free to use it if you want.
@@ -29,8 +30,12 @@ CURRENT_DAY = datetime.now().day
 LAST_DAY_OF_THIS_MONTH = (calendar.monthrange(CURRENT_YEAR, CURRENT_MONTH))[-1]
 MOD_PERMISSIONS = ['Paladin / Resort Manager', 'Max Relax (Leader)',
                    'Deputy Owner/Admiral']
-NEW_MEMBER_CHANNEL = 684823709302784029
 PET_CHANNEL = 684833421834321920
+NEW_MEMBER_CHANNEL = 684505358957281350
+NEW_MEMBER_ROLE_ID = 684866959371927734
+SAPPHIRE_ROLE_ID = 685925518394130500
+EMERALD_ROLE_ID = 684515748789616664
+
 SLEEP = 15
 
 
