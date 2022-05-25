@@ -104,7 +104,6 @@ def main():
         new_member_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
         emerald_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
 
-
         if settings.NEW_MEMBER_ROLE_ID in role_ids:
             await member.remove_roles(new_member_role)
             await member.add_roles(emerald_role)
@@ -124,10 +123,12 @@ def main():
             for attachment in message.attachments:
                 if attachment.content_type != 'video/mp4':
                     db.insert_pets(attachment.id,
-                        str(message.author.display_name), str(attachment),
-                        message.created_at)
+                                   str(message.author.display_name), str(
+                                       attachment),
+                                   message.created_at)
     # best to put it in here
     # The message handler for both new message and edits
+
     async def common_handle_message(message: discord.Message):
         if message.channel.id == settings.PET_CHANNEL:
             await handle_new_pet_picture(message)
@@ -137,10 +138,10 @@ def main():
                 if len(message.content) > 12 and '|' not in message.content:
                     await channel.send('Please enter a valid RSN.')
                     sleep(3)
-                    await message.delete()
+                    # await message.delete()
                 else:
                     await update_nickname(message.author, message.content)
-                    await message.delete()
+                    # await message.delete()
         if message.type == discord.message.MessageType.new_member:
             handle_new_member(message)
         text = message.content
@@ -181,6 +182,7 @@ def main():
         await common_handle_message(after)
 
     client.run(settings.BOT_TOKEN)
+
 
 if __name__ == '__main__':
     main()
