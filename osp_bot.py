@@ -64,6 +64,9 @@ def main():
                 await channel.send(embed=embed)
         display_current_comp_leaderboard_event.start()
 
+
+
+
     async def update_nickname(member: discord.message, nickname_query):
         nickname_valid = False
 
@@ -94,7 +97,8 @@ def main():
             if wom_lookup_user(nickname_query) is not None:
                 print(f'{nickname_query} user valid.')
                 nickname_valid = True
-        osp_client = client.get_guild(855060664686477373)
+        osp_client = client.get_guild(622716714387374100)
+        print(osp_client)
         sapphire_role = osp_client.get_role(settings.SAPPHIRE_ROLE_ID)
         new_member_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
         emerald_role = osp_client.get_role(settings.EMERALD_ROLE_ID)
