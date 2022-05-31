@@ -95,13 +95,13 @@ def main():
                 print(f'{nickname_query} user valid.')
                 nickname_valid = True
         osp_client = client.get_guild(855060664686477373)
-        sapphire_role = osp_client.get_role(855060665093849095)
+        sapphire_role = osp_client.get_role(settings.SAPPHIRE_ROLE_ID)
         new_member_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
-        emerald_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
+        emerald_role = osp_client.get_role(settings.EMERALD_ROLE_ID)
 
         if settings.NEW_MEMBER_ROLE_ID in role_ids:
-            await member.remove_roles(new_member_role)
             await member.add_roles(emerald_role)
+            await member.remove_roles(new_member_role)
         if settings.SAPPHIRE_ROLE_ID in role_ids:
             await member.remove_roles(sapphire_role)
             await member.add_roles(emerald_role)
