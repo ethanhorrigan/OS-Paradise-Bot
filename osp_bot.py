@@ -1,10 +1,7 @@
 """Main module"""
-from dis import disco
-from email import message
 import sys
 from time import sleep
 import discord
-from discord.utils import get
 from discord.ext import tasks
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from src import message_handler, settings
