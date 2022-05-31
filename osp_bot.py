@@ -98,11 +98,17 @@ def main():
         sapphire_role = osp_client.get_role(settings.SAPPHIRE_ROLE_ID)
         new_member_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
         emerald_role = osp_client.get_role(settings.EMERALD_ROLE_ID)
+        print(f'new member role {new_member_role}')
+        print(f'sapphire_role {sapphire_role}')
+        print(f'emerald_role {emerald_role}')
 
         if settings.NEW_MEMBER_ROLE_ID in role_ids:
             await member.add_roles(emerald_role)
+            print('adding emerald role')
             await member.remove_roles(new_member_role)
+            print('removing new member role')
         if settings.SAPPHIRE_ROLE_ID in role_ids:
+            print('sapphire role found')
             await member.remove_roles(sapphire_role)
             await member.add_roles(emerald_role)
 
