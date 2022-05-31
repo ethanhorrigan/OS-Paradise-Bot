@@ -69,6 +69,7 @@ def main():
 
     async def update_nickname(member: discord.message, nickname_query):
         nickname_valid = False
+        new_member = False
 
         nickname = member.nick
         new_rsn_channel = client.get_channel(684505358957281350)
@@ -108,6 +109,7 @@ def main():
         print(f'emerald_role {emerald_role}')
 
         if settings.NEW_MEMBER_ROLE_ID in role_ids:
+            new_member = True
             await member.add_roles(emerald_role)
             print('adding emerald role')
             await member.add_roles(verified_role)
@@ -121,8 +123,12 @@ def main():
 
         if nickname_valid:
             await member.edit(nick=nickname_query)
-            embed.add_field(name='Name', value=nickname, inline=True)
-            embed.add_field(name='Changed To', value=nickname_query, inline=True)
+            if new_member:
+                embed.add_field(name='New Member',
+                                value=nickname_query, inline=True)
+            else:
+                embed.add_field(name='Name', value=nickname, inline=True)
+                embed.add_field(name='Changed To', value=nickname_query, inline=True)
             await rsn_log_channel.send(embed=embed)
         return None
 
