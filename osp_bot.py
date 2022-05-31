@@ -67,37 +67,35 @@ def main():
                 await channel.send(embed=embed)
         display_current_comp_leaderboard_event.start()
 
-    async def update_nickname(member: discord.message, message):
+    async def update_nickname(member: discord.message, nickname_query):
         nickname_valid = False
 
         nickname = member.nick
         new_rsn_channel = client.get_channel(684505358957281350)
         rsn_log_channel = client.get_channel(685192535106125834)
 
-        embed = discord.Embed(title='RSN Update',
-                              color=discord.Color.orange())
+        embed = discord.Embed(title='RSN Update', color=discord.Color.orange())
         role_ids = []
         for role in member.roles:
             role_ids.append(role.id)
         print(role_ids)
 
-        # Account1 | Account2
-        if '|' in message:
-            users = message.split('| ')
+        if '|' in nickname_query:
+            users = nickname_query.split('| ')
             main_account = users[0].strip()
             alt_account = users[1].strip()
             print(main_account, alt_account)
             for u in users:
                 print(f'searching for username: {u}')
                 if wom_lookup_user(u) is not None:
-                    print(f'{message} user valid.')
+                    print(f'{nickname_query} user valid.')
                     nickname_valid = True
                 else:
                     nickname_valid = False
                     return None
         else:
-            if wom_lookup_user(message) is not None:
-                print(f'{message} user valid.')
+            if wom_lookup_user(nickname_query) is not None:
+                print(f'{nickname_query} user valid.')
                 nickname_valid = True
         osp_client = client.get_guild(855060664686477373)
         sapphire_role = osp_client.get_role(855060665093849095)
@@ -112,9 +110,9 @@ def main():
             await member.add_roles(emerald_role)
 
         if nickname_valid:
-            await member.edit(nick=message)
+            await member.edit(nick=nickname_query)
             embed.add_field(name='Name', value=nickname, inline=True)
-            embed.add_field(name='Changed To', value=message, inline=True)
+            embed.add_field(name='Changed To', value=nickname_query, inline=True)
             await rsn_log_channel.send(embed=embed)
         return None
 
