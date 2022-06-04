@@ -45,18 +45,6 @@ def main():
         @tasks.loop(hours=1.0)
         async def display_current_comp_leaderboard_event():
             """Comp updater event"""
-
-            # pet_channel = client.get_channel(settings.PET_CHANNEL)
-            # pet_channel_msgs = await pet_channel.history(limit=500).flatten()
-            # for msg in pet_channel_msgs:
-            #     if len(msg.attachments) > 0:
-            #         for attachment in msg.attachments:
-            #             if attachment.content_type != 'video/mp4':
-            #                 db.insert_pets(attachment.id,
-            #                                str(msg.author.display_name), str(
-            #                                    attachment),
-            #                                msg.created_at)
-
             channel = client.get_channel(684521702113280002)
             comp = Competition()
             if comp.running:
@@ -70,16 +58,14 @@ def main():
     async def update_nickname(member: discord.message, nickname_query):
         nickname_valid = False
         new_member = False
-
         nickname = member.nick
-        new_rsn_channel = client.get_channel(684505358957281350)
+
         rsn_log_channel = client.get_channel(685192535106125834)
 
         embed = discord.Embed(title='RSN Update', color=discord.Color.orange())
         role_ids = []
         for role in member.roles:
             role_ids.append(role.id)
-        print(role_ids)
 
         if '|' in nickname_query:
             users = nickname_query.split('| ')
@@ -104,20 +90,14 @@ def main():
         new_member_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
         emerald_role = osp_client.get_role(settings.EMERALD_ROLE_ID)
         verified_role = osp_client.get_role(settings.VERIFIED_ROLE_ID)
-        print(f'new member role {new_member_role}')
-        print(f'sapphire_role {sapphire_role}')
-        print(f'emerald_role {emerald_role}')
+
 
         if settings.NEW_MEMBER_ROLE_ID in role_ids:
             new_member = True
             await member.add_roles(emerald_role)
-            print('adding emerald role')
             await member.add_roles(verified_role)
-            print('adding verified role')
             await member.remove_roles(new_member_role)
-            print('removing new member role')
         if settings.SAPPHIRE_ROLE_ID in role_ids:
-            print('sapphire role found')
             await member.remove_roles(sapphire_role)
             await member.add_roles(emerald_role)
 
@@ -156,6 +136,8 @@ def main():
                 else:
                     await update_nickname(message.author, message.content)
                     await message.delete()
+            sleep(5)
+            await message.delete()
         if message.type == discord.message.MessageType.new_member:
             handle_new_member(message)
         text = message.content
