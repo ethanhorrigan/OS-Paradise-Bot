@@ -1,7 +1,6 @@
 {
-    "python.analysis.extraPaths": [
-        "./system"
-    ],
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+  "python.analysis.extraPaths": ["./system"],
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "html.format.wrapLineLength": 80
 }
