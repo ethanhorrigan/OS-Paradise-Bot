@@ -108,7 +108,8 @@ def main():
                                 value=nickname_query, inline=True)
             else:
                 embed.add_field(name='Name', value=nickname, inline=True)
-                embed.add_field(name='Changed To', value=nickname_query, inline=True)
+                embed.add_field(name='Changed To', value=nickname_query,
+                inline=True)
             await rsn_log_channel.send(embed=embed)
         return None
 
