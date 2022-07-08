@@ -4,4 +4,4 @@ repos:
     hooks:
       - id: pylint
         args:
-          - --max-line-length=80
+          - --max-line-length=79
