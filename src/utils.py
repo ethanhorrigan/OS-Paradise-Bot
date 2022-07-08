@@ -35,7 +35,8 @@ def get_oridinal(number):
 
 
 def get_channel(client, value, attribute='name'):
-    channel = next((c for c in client.get_all_channels() if getattr(c, attribute).lower() == value.lower()), None)
+    channel = next((c for c in client.get_all_channels()
+                    if getattr(c, attribute).lower() == value.lower()), None)
     if not channel:
         raise ValueError('No such channel')
     return channel
