@@ -26,7 +26,8 @@ class GetMentor(BaseCommand):
                 content = content.split(',')
                 for content_type in content:
                     abr = mentor_roles.get_abbreviation(content_type)
-                    if user_content in abr.lower() and name not in mentor_names:
+                    if user_content in abr.lower()\
+                        and name not in mentor_names:
                         mentor_names.append(f'\
                             <@{db.get_user_id_by_display_name(str(name))}>')
         return mentor_names

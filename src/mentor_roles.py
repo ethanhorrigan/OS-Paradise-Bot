@@ -9,7 +9,8 @@ class MentorRoles:
     TOB_HM = { 'name': 'Hard Mode: Thearte of Blood', 'abr': 'tob, hm tob' }
     VORKATH = { 'name': 'Vorkath', 'abr': 'vork,vorkath' }
     ZULRAH = { 'name': 'Zulrah', 'abr': 'zulrah' }
-    SOLO_COX = { 'name': 'Chambers of Xeric: Solo', 'abr': 'cox solo,solo cox' }
+    SOLO_COX = {'name': 'Chambers of Xeric: Solo', \
+        'abr': 'cox solo,solo cox'}
     GAUNTLET = { 'name': 'Gauntlet', 'abr': 'gauntlet,cg,corrupted gauntlet' }
     INFERNO = { 'name': 'Inferno', 'abr': 'inferno,infernal cape' }
     JAD = { 'name': 'Jad', 'abr': 'fire cape,fight caves,jad' }
