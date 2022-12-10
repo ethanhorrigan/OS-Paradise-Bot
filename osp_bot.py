@@ -127,6 +127,7 @@ def main():
 
     async def common_handle_message(message: discord.Message):
         log.info(f'message {message}')
+        log.info(f'message.content {message.content}')
         if message.channel.id == settings.PET_CHANNEL:
             await handle_new_pet_picture(message)
         if message.channel.id == settings.NEW_MEMBER_CHANNEL:
