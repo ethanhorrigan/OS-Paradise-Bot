@@ -144,6 +144,7 @@ def main():
             handle_new_member(message)
         text = message.content
         log.info(f'handling message {text}')
+        log.info(f'command prefix: {settings.COMMAND_PREFIX}')
         if text.startswith(settings.COMMAND_PREFIX) \
                 and text != settings.COMMAND_PREFIX:
             cmd_split = text[len(settings.COMMAND_PREFIX):].split()
