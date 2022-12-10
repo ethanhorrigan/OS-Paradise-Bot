@@ -23,10 +23,11 @@ def main():
     """osp main"""
     # Initialize the client
     log.info('Starting up...')
-    intents = discord.Intents.default()
-    intents.members = True
-    intents.presences = True
-    intents.guilds = True
+    # intents = discord.Intents.default()
+    # intents.members = True
+    # intents.presences = True
+    # intents.guilds = True
+    intents=discord.Intents.all()
     client = discord.Client(intents=intents)
 
     @client.event
