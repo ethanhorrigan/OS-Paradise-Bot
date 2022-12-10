@@ -3,7 +3,13 @@ import datetime
 import inflect
 import requests
 import discord
+from time import sleep
+import src.osp_logger as log
 
+
+class TooManyClientsError(Exception):
+    log.warn('Too many clients already connected to the server')
+    pass
 
 class LeaderboardEntry:
     """Object for leaderboard entries
@@ -37,36 +43,54 @@ class Competition:
     IMAGE_URL = 'https://oldschool.runescape.wiki/images/'
 
     def __init__(self):
+        self.competitions = self.get_competitions()
         self._current_comp_id = self.current_comp_id()
+        log.info(f'Current competition ID: {self._current_comp_id}')
         self._current_comp_name = self.current_comp_name()
+        log.info(self._current_comp_name)
         self.metric = self.current_comp_metric()
+        log.info(self.metric)
         self.image = self.validate_image_url(
             f'{self.IMAGE_URL}{self.metric.title()}.png')
         self.running = self.is_competition_running()
+        log.info(f'Competition running: {self.running}')
+
+    def get_competitions(self, retries=3, timeout=15):
+        """Return a list of competitions from wise old man"""
+        for i in range(retries):
+            log.info(f'get_competitions attempt {i + 1} of {retries}')
+            try:
+                url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
+                log.info(f'Executing request to: {url}')
+                competitions = requests.get(url).json()
+                if 'message' in competitions and competitions['message'] == 'sorry, too many clients already':
+                    raise TooManyClientsError(
+                        'Too many clients are already connected to the server')
+                else:
+                    return competitions
+            except requests.exceptions.RequestException as exception:
+                log.info(exception)
+            except TooManyClientsError as exception:
+                log.warn(exception)
+            log.info(f'Waiting {timeout} seconds before retrying')
+            sleep(timeout)
+
+        return None
 
     def current_comp_id(self):
         """Return the current competition id"""
-        try:
-            url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
-        except requests.exceptions.RequestException as exception:
-            print(exception)
-        return str(requests.get(url).json()[0]['id'])
+        log.info('Getting current competition id')
+        return str(self.competitions[0]['id'])
 
     def current_comp_name(self):
         """Return the current competition name"""
-        try:
-            url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
-        except requests.exceptions.RequestException as exception:
-            print(exception)
-        return str(requests.get(url).json()[0]['title'])
+        log.info('Getting current competition name')
+        return str(self.competitions[0]['title'])
 
     def current_comp_metric(self):
         """Return the current competition name"""
-        try:
-            url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
-        except requests.exceptions.RequestException as exception:
-            print(exception)
-        return str(requests.get(url).json()[0]['metric'])
+        log.info('Getting current competition metric')
+        return str(self.competitions[0]['metric'])
 
     def validate_image_url(self, image_url):
         """Validates an image url returns correctly
@@ -79,16 +103,8 @@ class Competition:
                 final_url = 'https://oldschool.runescape.wiki' \
                     + '/images/thumb/Boss.png/1244px-Boss.png'
         except requests.exceptions.RequestException as exception:
-            print(exception)
+            log.info(exception)
         return final_url
-
-    def current_comp_as_json(self):
-        """Return the current competition in JSON format"""
-        try:
-            url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
-        except requests.exceptions.RequestException as exception:
-            print(exception)
-        return str(requests.get(url).json()[0])
 
     def get_leaderboards_current_comp(self, display_amount):
         """Returns gained exp/kc for current comp"""
@@ -103,7 +119,7 @@ class Competition:
                 ordinal_pos = self.get_oridinal(i+1)
                 results.append(LeaderboardEntry(ordinal_pos, name, gained))
         except requests.exceptions.RequestException as err:
-            print(err)
+            log.info(err)
         return results
 
     def create_current_leaderboard_discord_embed(self, display_amount):
@@ -130,7 +146,7 @@ class Competition:
         try:
             oridnal = self.inflect_engine.ordinal(number)
         except TypeError as type_error:
-            print(f'{type_error}: Only integers are allowed')
+            log.info(f'{type_error}: Only integers are allowed')
         return oridnal
 
     @staticmethod
@@ -160,27 +176,20 @@ class Competition:
 
     def get_comp_start_date(self):
         """Return the current competition start date"""
-        try:
-            url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
-        except requests.exceptions.RequestException as err:
-            print(err)
-        return str(requests.get(url).json()[0]['startsAt'])
-
-    def test(self):
-        pass
+        return str(self.competitions[0]['startsAt'])
 
     def get_comp_end_date(self):
         """Return the current competition end date"""
         try:
             url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
-            res = str(requests.get(url).json()[0]['endsAt'])
+            res = str(self.competitions[0]['endsAt'])
             date_formatted = self.format_date_time(res)
             datetime_until = date_formatted - datetime.datetime.now()
             now = datetime.datetime.now()
             now = datetime.datetime(
                 now.year, now.month, now.day, now.hour, now.minute)
         except requests.exceptions.RequestException as err:
-            print(err)
+            log.warn(err)
         return [now, date_formatted]
 
     def is_competition_running(self):
@@ -196,28 +205,23 @@ class Competition:
     def get_comp_end_time(self):
         """Return the current competition end time"""
         try:
-            url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
-            res = str(requests.get(url).json()[0]['endsAt'])
+            res = str(self.competitions[0]['endsAt'])
             date_formatted = self.format_date_time(res)
             datetime_until = date_formatted - datetime.datetime.now()
             now = datetime.datetime.now()
             now = datetime.datetime(
                 now.year, now.month, now.day, now.hour, now.minute)
         except requests.exceptions.RequestException as err:
-            print(err)
+            log.info(err)
         return datetime_until
 
     def get_comp_start_time(self):
         """Return the current competition start time"""
         try:
             url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
-            res = str(requests.get(url).json()[0]['startsAt'])
+            res = str(self.competitions[0]['startsAt'])
             date_formatted = self.format_date_time(res)
         except requests.exceptions.RequestException as err:
-            print(err)
+            log.info(err)
         return date_formatted
 
-
-c = Competition()
-print(c.get_comp_start_time())
-print(f'Now: {datetime.datetime.now()}')

@@ -5,6 +5,7 @@ import discord
 from discord.ext import tasks
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from src import message_handler, settings
+import src.osp_logger as log
 from src.comp import Competition
 import src.database.database as db
 from src.wom import wom_lookup_user
@@ -21,7 +22,7 @@ sched = AsyncIOScheduler()
 def main():
     """osp main"""
     # Initialize the client
-    print('Starting up...')
+    log.info('Starting up...')
     intents = discord.Intents.default()
     intents.members = True
     intents.presences = True
@@ -71,21 +72,21 @@ def main():
             users = nickname_query.split('| ')
             main_account = users[0].strip()
             alt_account = users[1].strip()
-            print(main_account, alt_account)
+            log.info(main_account, alt_account)
             for u in users:
-                print(f'searching for username: {u}')
+                log.info(f'searching for username: {u}')
                 if wom_lookup_user(u) is not None:
-                    print(f'{nickname_query} user valid.')
+                    log.info(f'{nickname_query} user valid.')
                     nickname_valid = True
                 else:
                     nickname_valid = False
                     return None
         else:
             if wom_lookup_user(nickname_query) is not None:
-                print(f'{nickname_query} user valid.')
+                log.info(f'{nickname_query} user valid.')
                 nickname_valid = True
         osp_client = client.get_guild(622716714387374100)
-        print(osp_client)
+        log.info(osp_client)
         sapphire_role = osp_client.get_role(settings.SAPPHIRE_ROLE_ID)
         new_member_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
         emerald_role = osp_client.get_role(settings.EMERALD_ROLE_ID)
@@ -149,7 +150,7 @@ def main():
                 await message_handler.handle_command(
                     cmd_split[0].lower(), cmd_split[1:], message, client)
             except:
-                print('Error while handling message', flush=True)
+                log.info('Error while handling message', flush=True)
                 raise
 
     def handle_new_member(message):
