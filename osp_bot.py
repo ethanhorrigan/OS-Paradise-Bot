@@ -126,6 +126,7 @@ def main():
     # The message handler for both new message and edits
 
     async def common_handle_message(message: discord.Message):
+        log.info(f'message {message}')
         if message.channel.id == settings.PET_CHANNEL:
             await handle_new_pet_picture(message)
         if message.channel.id == settings.NEW_MEMBER_CHANNEL:
