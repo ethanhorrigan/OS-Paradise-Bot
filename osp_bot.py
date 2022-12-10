@@ -143,6 +143,7 @@ def main():
         if message.type == discord.message.MessageType.new_member:
             handle_new_member(message)
         text = message.content
+        log.info(f'handling message {text}')
         if text.startswith(settings.COMMAND_PREFIX) \
                 and text != settings.COMMAND_PREFIX:
             cmd_split = text[len(settings.COMMAND_PREFIX):].split()
