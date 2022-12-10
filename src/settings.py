@@ -58,9 +58,9 @@ async def get_permissions(display_name):
     return permissions
 
 
-def create_discord_codeblock(text):
-    """Generates discord codeblock from given text"""
-    return ''.join((CODE_BLOCK, text, CODE_BLOCK))
+# def create_discord_codeblock(text):
+#     """Generates discord codeblock from given text"""
+#     return ''.join((CODE_BLOCK, text, CODE_BLOCK))
 
 
 def check_username_length(command):
