@@ -6,6 +6,7 @@ from src.commands import base_command
 COMMAND_HANDLERS = {c.__name__.lower(): c()
                     for c in base_command.BaseCommand.__subclasses__()}
 
+print(COMMAND_HANDLERS)
 async def handle_command(command, args, message, bot_client):
     if command not in COMMAND_HANDLERS:
         return
@@ -18,5 +19,6 @@ async def handle_command(command, args, message, bot_client):
         await message.channel.send(message.author.mention + " \
             Insufficient parameters!")
     else:
+        print('cmd_obj.handle(args, message, bot_client)')
         await cmd_obj.handle(args, message, bot_client)
 
