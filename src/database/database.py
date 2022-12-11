@@ -65,6 +65,16 @@ def insert_members(display_name, top_role, user_id, permissions, roles, \
     finally:
         connection.commit()
 
+def get_members():
+    """Select all members from members table"""
+    try:
+        sql = 'SELECT * FROM members'
+        cursor.execute(sql)
+    except (connection.error, sql.ProgrammingError, sql.connection) as err:
+        print(f'error writing to database: {err}')
+    finally:
+        connection.commit()
+    return cursor.fetchall()
 
 def insert_pets(attachment_id, author, attachment_url, created_at):
     """Insert or replace new pet entry"""

@@ -42,33 +42,3 @@ def get_all_display_names(display_name):
         new_name = r[i]['newName']
         a.append(f'{old_name} -> {new_name}')
     return '\n'.join(a[::-1])
-
-
-def get_all_competitions():
-    wom_group_url = 'https://api.wiseoldman.net/groups/'
-    return requests.get(wom_group_url + settings.GROUP_ID \
-        + '/competitions').json()
-
-
-def get_all_ids():
-    ids = []
-    json = get_all_competitions()
-    for i in json:
-        ids.append(i['id'])
-    return ids
-
-
-def get_leaderboards_all_comps():
-    ids = get_all_ids()
-    database.create_table_rankings()
-    for i in range(len(ids)):
-        for j in range(3):
-            print('get_leaderboards_all_comps Making request to WOM')
-            result = requests.get(settings.WOM_URL + str(ids[i])).json()
-            name = result['participants'][j]['displayName']
-            # comp = (result['metric']).title()
-            if database.check_if_user_exists_in_rankings(name):
-                database.update_rankings(name, points.get_points(j))
-            else:
-                database.insert_rankings(str(name), points.get_points(j))
-            print(f'{j} {name}')

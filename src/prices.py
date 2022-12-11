@@ -91,6 +91,7 @@ class Prices:
 
 prices = Prices()
 latest = prices.get_latest()
+print(latest)
 
 # create a function to print all keys in a dictionary
 def print_dict(dictionary):

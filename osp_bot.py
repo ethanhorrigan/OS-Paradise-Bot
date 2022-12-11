@@ -44,6 +44,10 @@ def main():
                 activity=discord.Game(name=settings.NOW_PLAYING))
         print('Logged in!', flush=True)
 
+        log.info(db.get_members()[1])
+        for memeber in db.get_members():
+            log.info(memeber)
+
         @tasks.loop(hours=1.0)
         async def display_current_comp_leaderboard_event():
             """Comp updater event"""
@@ -127,8 +131,6 @@ def main():
     # The message handler for both new message and edits
 
     async def common_handle_message(message: discord.Message):
-        log.info(f'message {message}')
-        log.info(f'message.content {message.content}')
         if message.channel.id == settings.PET_CHANNEL:
             await handle_new_pet_picture(message)
         if message.channel.id == settings.NEW_MEMBER_CHANNEL:
@@ -147,16 +149,14 @@ def main():
             handle_new_member(message)
         text = message.content
         log.info(f'handling message {text}')
-        log.info(f'command prefix: {settings.COMMAND_PREFIX}')
         if text.startswith(settings.COMMAND_PREFIX) \
                 and text != settings.COMMAND_PREFIX:
             cmd_split = text[len(settings.COMMAND_PREFIX):].split()
-            print(f'cmd_split: {cmd_split}')
             try:
                 await message_handler.handle_command(
                     cmd_split[0].lower(), cmd_split[1:], message, client)
             except:
-                log.info('Error while handling message', flush=True)
+                print('Error while handling message', flush=True)
                 raise
 
     def handle_new_member(message):
