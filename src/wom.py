@@ -1,6 +1,6 @@
 '''Wise old man module'''
 from src.database import database
-from src import settings, points
+from src import settings
 import requests
 
 def wom_lookup_user(user):
