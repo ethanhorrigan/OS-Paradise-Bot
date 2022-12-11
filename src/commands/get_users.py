@@ -1,8 +1,6 @@
 """Get all Users in Discord Command"""
 from src.commands.base_command import BaseCommand
 from src.settings import MOD, ALL_USERS, MOD_PERMISSIONS
-from src.mentor_roles import MentorRoles
-from src.wom import wom_lookup_user
 import src.database.database as db
 import src.osp_logger as log
 
@@ -66,30 +64,31 @@ class GetUsers(BaseCommand):
                         self.handle_mulitple_users(display_name)
 
                         self.members.append(member.display_name)
-                    # if '🤝Verified' in str(member.top_role) or '🤖 Bots' in str(member.top_role):
-                    #     continue
-                    # else:
-                    #     role = (str(member.top_role))
-                    #     print(role)
-                    #     permissions = self.set_permissions(role)
+                    if '🤝Verified' in str(member.top_role) \
+                        or '🤖 Bots' in str(member.top_role):
+                        continue
+                    else:
+                        role = (str(member.top_role))
+                        print(role)
+                        permissions = self.set_permissions(role)
 
-                    #     print(f'Name: {member.display_name} \nPermissions: \
-                    #         {permissions}\nRole: {member.top_role}')
-                    #     print(f'Roles: {member.roles}')
-                    #     role_names = list(map(lambda n: n.name, member.roles))
-                    #     role_names = ','.join(role_names)
-                    #     consultant = False
-                    #     content = None
-                    #     if 'Mentor' in role_names:
-                    #         content_dict = self.set_mentor_content(\
-                    #             member.display_name)
-                    #         print(f'Content: {content_dict}')
-                    #         if content_dict is not None:
-                    #             content = content_dict['content']
-                    #             consultant = content_dict['consultant']
-                    #     db.insert_members(str(member.id), \
-                    #         str(member.display_name), str(member.top_role), \
-                    #             permissions, role_names, content, consultant)
+                        print(f'Name: {member.display_name} \nPermissions: \
+                            {permissions}\nRole: {member.top_role}')
+                        print(f'Roles: {member.roles}')
+                        role_names = list(map(lambda n: n.name, member.roles))
+                        role_names = ','.join(role_names)
+                        consultant = False
+                        content = None
+                        if 'Mentor' in role_names:
+                            content_dict = self.set_mentor_content(\
+                                member.display_name)
+                            print(f'Content: {content_dict}')
+                            if content_dict is not None:
+                                content = content_dict['content']
+                                consultant = content_dict['consultant']
+                        db.insert_members(str(member.id), \
+                            str(member.display_name), str(member.top_role), \
+                                permissions, role_names, content, consultant)
         # display_name, top_role, id, permissions, roles
         guilds = await client.fetch_guilds(limit=150).flatten()
         await message.channel.send('success')

@@ -1,7 +1,7 @@
 '''Current BOTW/SOTW module'''
 
 from src.commands.base_command import BaseCommand
-import src.wom as wom
+from src import wom
 from src.settings import ALL_USERS
 
 
