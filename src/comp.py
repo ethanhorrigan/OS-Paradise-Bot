@@ -63,7 +63,8 @@ class Competition:
                 url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
                 log.info(f'Executing request to: {url}')
                 competitions = requests.get(url).json()
-                if 'message' in competitions and competitions['message'] == 'sorry, too many clients already':
+                if 'message' in competitions and competitions['message']\
+                     == 'sorry, too many clients already':
                     raise TooManyClientsError(
                         'Too many clients are already connected to the server')
                 else:

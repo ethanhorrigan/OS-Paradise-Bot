@@ -31,6 +31,8 @@ unsafe-load-any-extension=no
 
 [MESSAGES CONTROL]
 
+string-quote=single
+
 # Only show warnings with the listed confidence levels. Leave empty to show
 # all. Valid levels: HIGH, INFERENCE, INFERENCE_FAILURE, UNDEFINED
 confidence=
@@ -304,7 +306,7 @@ notes=TODO
 # This flag controls whether inconsistent-quotes generates a warning when the
 # character used as a quote delimiter is used inconsistently within a module.
 check-quote-consistency=yes
-
+string-quote=single
 
 [VARIABLES]
 

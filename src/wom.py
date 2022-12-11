@@ -1,5 +1,4 @@
 '''Wise old man module'''
-from src.database import database
 from src import settings
 import requests
 
