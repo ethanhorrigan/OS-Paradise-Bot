@@ -18,3 +18,4 @@ jobs:
     - name: Lint with pylint
       run: |
         pylint --rcfile=.pylintrc **/*.py
+        pylint --rcfile=.pylintrc src/**/*.py
