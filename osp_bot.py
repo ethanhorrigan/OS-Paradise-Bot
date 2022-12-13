@@ -28,7 +28,7 @@ def main():
     # intents.members = True
     # intents.presences = True
     # intents.guilds = True
-    intents=discord.Intents.all()
+    intents = discord.Intents.all()
     client = discord.Client(intents=intents)
 
     @client.event
@@ -58,9 +58,6 @@ def main():
                 embed = comp.create_current_leaderboard_discord_embed(10)
                 await channel.send(embed=embed)
         display_current_comp_leaderboard_event.start()
-
-
-
 
     async def update_nickname(member: discord.message, nickname_query):
         nickname_valid = False
@@ -98,7 +95,6 @@ def main():
         emerald_role = osp_client.get_role(settings.EMERALD_ROLE_ID)
         verified_role = osp_client.get_role(settings.VERIFIED_ROLE_ID)
 
-
         if settings.NEW_MEMBER_ROLE_ID in role_ids:
             new_member = True
             await member.add_roles(emerald_role)
@@ -116,7 +112,7 @@ def main():
             else:
                 embed.add_field(name='Name', value=nickname, inline=True)
                 embed.add_field(name='Changed To', value=nickname_query,
-                inline=True)
+                                inline=True)
             await rsn_log_channel.send(embed=embed)
         return None
 
@@ -156,7 +152,7 @@ def main():
             try:
                 await message_handler.handle_command(
                     cmd_split[0].lower(), cmd_split[1:], message, client)
-            except:
+            except ValueError:
                 print('Error while handling message', flush=True)
                 raise
 
@@ -192,8 +188,8 @@ def main():
 if __name__ == '__main__':
     if (settings.BOT_TOKEN is None) or (settings.BOT_TOKEN == ''):
         log.warn('Please set the BOT_TOKEN environment variable')
-        
+
     if (settings.BOT_TOKEN is not None):
         main()
-    
+
     osp_server.start()

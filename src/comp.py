@@ -11,6 +11,7 @@ class TooManyClientsError(Exception):
     log.warn('Too many clients already connected to the server')
     pass
 
+
 class LeaderboardEntry:
     """Object for leaderboard entries
     New instance for this class is called on each command/event

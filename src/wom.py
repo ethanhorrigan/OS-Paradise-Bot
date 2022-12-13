@@ -2,6 +2,7 @@
 from src import settings
 import requests
 
+
 def wom_lookup_user(user):
     """Retrieve all user details from wise old man"""
     if len(user) < 12:
