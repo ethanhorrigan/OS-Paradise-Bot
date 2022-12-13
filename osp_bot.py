@@ -189,5 +189,6 @@ if __name__ == '__main__':
     if settings.BOT_TOKEN is not None:
         main()
 
-    if server_constants.RUN_SERVER:
+    log.info(f'Starting OSP Server: {server_constants.RUN_SERVER}')
+    if server_constants.RUN_SERVER == 'True':
         osp_server.start()
