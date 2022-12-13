@@ -1,3 +1,4 @@
+'''Server for the OSP API'''
 from flask import Flask, request
 import json
 import psycopg2
@@ -18,11 +19,11 @@ except psycopg2.Error as err:
 cursor = connection.cursor()
 
 def create_database():
-    connection.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
-    # Create the database
+    connection.set_isolation_level(
+        psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+
     cursor.execute('CREATE DATABASE osp_database')
 
-    # Close the cursor and connection
     cursor.close()
     cursor.close()
 
@@ -41,8 +42,8 @@ def get_members():
     try:
         sql = 'SELECT * FROM members'
         cursor.execute(sql)
-    except (connection.error, sql.ProgrammingError, sql.connection) as err:
-        print(f'error writing to database: {err}')
+    except (connection.error, sql.ProgrammingError, sql.connection) as e:
+        print(f'error writing to database: {e}')
     finally:
         connection.commit()
     return cursor.fetchall()

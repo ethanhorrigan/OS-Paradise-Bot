@@ -1,3 +1,4 @@
+'''Generate Random Temporary Passwords'''
 import string
 import random
 
