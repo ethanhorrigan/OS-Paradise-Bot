@@ -1,8 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [],
+  content: ['./*.html', './src/**/*.{js,ts,jsx,tsx,css}'],
   theme: {
     extend: {},
+    fonts: {
+      'my-custom-font': [
+        'assets/fonts/runescape_uf.ttf',
+      ],
+    },
   },
-  plugins: [],
+  plugins: []
 }
