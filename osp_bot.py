@@ -189,7 +189,7 @@ if __name__ == '__main__':
     if (settings.BOT_TOKEN is None) or (settings.BOT_TOKEN == ''):
         log.warn('Please set the BOT_TOKEN environment variable')
 
-    if (settings.BOT_TOKEN is not None):
+    if settings.BOT_TOKEN is not None:
         main()
 
     osp_server.start()
