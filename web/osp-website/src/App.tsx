@@ -1,11 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Countdown } from './Countdown';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+      <Countdown date="2022-12-31 23:59:59" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
