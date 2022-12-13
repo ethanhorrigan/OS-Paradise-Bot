@@ -2,21 +2,22 @@
 from flask import Flask, request
 import json
 import psycopg2
+import src.api.constants as server_constants
 
 app = Flask(__name__)
 
-# Connect to the database
-try:
-    connection = psycopg2.connect(
-        host='localhost',
-        user='postgres',
-        password='postgres',
-        database='osp_database'
-    )
-except psycopg2.Error as err:
-    print(f'Error connecting to database: {err}')
+if server_constants.RUN_SERVER:
+    try:
+        connection = psycopg2.connect(
+            host='localhost',
+            user='postgres',
+            password='postgres',
+            database='osp_database'
+        )
+    except psycopg2.Error as err:
+        print(f'Error connecting to database: {err}')
 
-cursor = connection.cursor()
+    cursor = connection.cursor()
 
 def create_database():
     connection.set_isolation_level(
