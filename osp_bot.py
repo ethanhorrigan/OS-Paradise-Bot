@@ -10,6 +10,7 @@ from src.comp import Competition
 import src.database.database as db
 from src.wom import wom_lookup_user
 import src.api.server as osp_server
+import src.api.constants as server_constants
 
 # Set to remember if the bot is already running, since on_ready may be called
 # more than once on reconnects
@@ -192,4 +193,5 @@ if __name__ == '__main__':
     if settings.BOT_TOKEN is not None:
         main()
 
-    osp_server.start()
+    if server_constants.RUN_SERVER:
+        osp_server.start()
