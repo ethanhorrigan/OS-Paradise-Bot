@@ -9,6 +9,7 @@ import src.osp_logger as log
 from src.comp import Competition
 import src.database.database as db
 from src.wom import wom_lookup_user
+import src.api.server as osp_server
 
 # Set to remember if the bot is already running, since on_ready may be called
 # more than once on reconnects
@@ -189,4 +190,10 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if (settings.BOT_TOKEN is None) or (settings.BOT_TOKEN == ''):
+        log.warn('Please set the BOT_TOKEN environment variable')
+        
+    if (settings.BOT_TOKEN is not None):
+        main()
+    
+    osp_server.start()

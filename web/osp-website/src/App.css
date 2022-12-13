@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Runescape UF';
+    font-display: block;
+    src: url('assets/fonts/runescape_uf.ttf');
+  }
+
+  @font-face {
+    font-family: "rssmall";
+    font-display: block;
+    src: url("../public/fonts/RuneScape-Chat-07.ttf");
+  }
+
+h1 {
+    font-family: "Runescape UF";
+}
