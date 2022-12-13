@@ -4,11 +4,11 @@ name: Git Version
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [closed]
     branches:
-      - master
+      - main
     if: github.event.pull_request.merged == true
 
 jobs:
