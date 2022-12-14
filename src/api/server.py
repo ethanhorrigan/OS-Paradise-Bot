@@ -6,7 +6,7 @@ import src.api.constants as server_constants
 
 app = Flask(__name__)
 
-if server_constants.RUN_SERVER:
+if server_constants.RUN_SERVER == 'True':
     try:
         connection = psycopg2.connect(
             host='localhost',
