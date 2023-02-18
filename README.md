@@ -261,20 +261,5 @@ Examples:
 
 - `await try_upload_file(client, channel, "/home/agu/file.jpg", delete_after_send=True)` will send `file.jpg` to channel `channel` without any caption and deleting the file afterwards.
 
-# Web
-
-- `npm start`
-Starts the development server.
-
-- `npm run build`
-Bundles the app into static files for production.
-
-- `npm test`
-Starts the test runner.
-
-- `npm run eject`
-Removes this tool and copies build dependencies, configuration files
-and scripts into the app directory. If you do this, you can’t go back!
-
 # License
 GPL-3.0
