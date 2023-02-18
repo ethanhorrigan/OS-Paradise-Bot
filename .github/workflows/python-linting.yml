@@ -19,3 +19,4 @@ jobs:
       run: |
         pylint --rcfile=.pylintrc **/*.py
         pylint --rcfile=.pylintrc src/**/*.py
+        pylint --rcfile=.pylintrc src/*.py

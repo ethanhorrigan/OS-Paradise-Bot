@@ -26,7 +26,7 @@ class RegisterMentor(BaseCommand):
             timezone_embed.add_field(name=emoji, value=continent, inline=True)
 
         msg = await message.channel.send(embed=timezone_embed)
-        for emoji in continents.keys():
+        for emoji in continents:
             await msg.add_reaction(emoji)
 
 

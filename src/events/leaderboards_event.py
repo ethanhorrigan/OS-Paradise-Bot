@@ -1,8 +1,7 @@
 '''Leaderboards event'''
 from src.api import utils
-from discord.ext import tasks
-
 from src.comp import Competition
+from discord.ext import tasks
 
 @tasks.loop(hours=1.0)
 async def display_current_comp_leaderboard_event(client):
