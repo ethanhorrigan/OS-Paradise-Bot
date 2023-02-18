@@ -1,5 +1,6 @@
+'''Generate embed for mentor registration'''
 import discord
-from src.api.constants import number_words, pvm_content
+from src.api.constants import number_words
 # create a new client instance
 client = discord.Client()
 

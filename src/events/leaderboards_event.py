@@ -1,5 +1,5 @@
 '''Leaderboards event'''
-import src.api.utils as utils
+from src.api import utils
 from discord.ext import tasks
 
 from src.comp import Competition
