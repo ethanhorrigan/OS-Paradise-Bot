@@ -1,6 +1,4 @@
-'''
-init module for parent directory
-'''
+'''init module for parent directory'''
 from os import listdir
 from os.path import dirname, basename
 

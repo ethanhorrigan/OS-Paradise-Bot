@@ -2,6 +2,10 @@
 import os
 
 RUN_SERVER = os.getenv('RUN_FLASK_SERVER', 'False')
+DB_NAME = os.environ.get('DB_NAME')
+DB_USER = os.environ.get('DB_USER')
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 pvm_content = [
     'God Wars Dungeon',
