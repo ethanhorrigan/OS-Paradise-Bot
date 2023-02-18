@@ -1,5 +1,6 @@
+'''Generate embed for mentor registration'''
 import discord
-from src.api.constants import number_words, pvm_content
+from src.api.constants import number_words
 # create a new client instance
 client = discord.Client()
 
@@ -21,4 +22,4 @@ async def generate_embed(title, content, channel):
         embed.add_reaction(reaction)
 
 
-pvm_content_embed = generate_embed('PvM Content', pvm_content)
+# pvm_content_embed = generate_embed('PvM Content', pvm_content)

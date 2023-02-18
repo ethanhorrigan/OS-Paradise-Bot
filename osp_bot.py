@@ -13,7 +13,7 @@ import src.api.server as osp_server
 import src.api.constants as server_constants
 import src.api.utils as utils
 from src.events.leaderboards_event import display_current_comp_leaderboard_event
-from src.events.mentor_registration import pvm_content_embed
+# from src.events.mentor_registration import pvm_content_embed
 
 # Set to remember if the bot is already running, since on_ready may be called
 # more than once on reconnects

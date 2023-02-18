@@ -67,7 +67,7 @@ class GetUsers(BaseCommand):
                     or '🤖 Bots' in str(member.top_role):
                     continue
                 else:
-                    role = (str(member.top_role))
+                    role = str(member.top_role)
                     print(role)
                     permissions = self.set_permissions(role)
 
