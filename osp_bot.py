@@ -1,4 +1,4 @@
-"""Main module"""
+'''Main module'''
 import sys
 from time import sleep
 import discord
@@ -11,6 +11,9 @@ import src.database.database as db
 from src.wom import wom_lookup_user
 import src.api.server as osp_server
 import src.api.constants as server_constants
+import src.api.utils as utils
+from src.events.leaderboards_event import display_current_comp_leaderboard_event
+from src.events.mentor_registration import pvm_content_embed
 
 # Set to remember if the bot is already running, since on_ready may be called
 # more than once on reconnects
@@ -22,7 +25,7 @@ sched = AsyncIOScheduler()
 
 
 def main():
-    """osp main"""
+    '''osp main'''
     # Initialize the client
     log.info('Starting up...')
     intents = discord.Intents.all()
@@ -42,75 +45,45 @@ def main():
                 activity=discord.Game(name=settings.NOW_PLAYING))
         print('Logged in!', flush=True)
 
-        log.info(db.get_members()[1])
-        for memeber in db.get_members():
-            log.info(memeber)
-
-        @tasks.loop(hours=1.0)
-        async def display_current_comp_leaderboard_event():
-            """Comp updater event"""
-            channel = client.get_channel(684521702113280002)
-            comp = Competition()
-            if comp.running:
-                embed = comp.create_current_leaderboard_discord_embed(10)
-                await channel.send(embed=embed)
-        display_current_comp_leaderboard_event.start()
+        display_current_comp_leaderboard_event.start(client)
 
     async def update_nickname(member: discord.message, nickname_query):
-        nickname_valid = False
-        new_member = False
-        nickname = member.nick
+        log.info(f'Updating nickname for {member.nick}')
+        rsn_log_channel = client.get_channel(settings.RSN_LOG_CHANNEL_ID)
+        try:
+            users = [u.strip() for u in nickname_query.split('|')]
+            valid_users = [u for u in users if wom_lookup_user(u)]
+            invalid_users = [u for u in users if u not in valid_users]
+            if len(valid_users) != len(users):
+                print(f'Invalid username provided {invalid_users} Please try again.')
+                return None
 
-        rsn_log_channel = client.get_channel(685192535106125834)
+            osp_client = client.get_guild(622716714387374100)
+            sapphire_role = discord.utils.get(osp_client.roles, id=settings.SAPPHIRE_ROLE_ID)
+            new_member_role = discord.utils.get(osp_client.roles, id=settings.NEW_MEMBER_ROLE_ID)
+            emerald_role = discord.utils.get(osp_client.roles, id=settings.EMERALD_ROLE_ID)
+            verified_role = discord.utils.get(osp_client.roles, id=settings.VERIFIED_ROLE_ID)
 
-        embed = discord.Embed(title='RSN Update', color=discord.Color.orange())
-        role_ids = []
-        for role in member.roles:
-            role_ids.append(role.id)
-
-        if '|' in nickname_query:
-            users = nickname_query.split('| ')
-            main_account = users[0].strip()
-            alt_account = users[1].strip()
-            log.info(main_account, alt_account)
-            for u in users:
-                log.info(f'searching for username: {u}')
-                if wom_lookup_user(u) is not None:
-                    log.info(f'{nickname_query} user valid.')
-                    nickname_valid = True
-                else:
-                    nickname_valid = False
-                    return None
-        else:
-            if wom_lookup_user(nickname_query) is not None:
-                log.info(f'{nickname_query} user valid.')
-                nickname_valid = True
-        osp_client = client.get_guild(622716714387374100)
-        log.info(osp_client)
-        sapphire_role = osp_client.get_role(settings.SAPPHIRE_ROLE_ID)
-        new_member_role = osp_client.get_role(settings.NEW_MEMBER_ROLE_ID)
-        emerald_role = osp_client.get_role(settings.EMERALD_ROLE_ID)
-        verified_role = osp_client.get_role(settings.VERIFIED_ROLE_ID)
-
-        if settings.NEW_MEMBER_ROLE_ID in role_ids:
-            new_member = True
-            await member.add_roles(emerald_role)
-            await member.add_roles(verified_role)
-            await member.remove_roles(new_member_role)
-        if settings.SAPPHIRE_ROLE_ID in role_ids:
-            await member.remove_roles(sapphire_role)
-            await member.add_roles(emerald_role)
-
-        if nickname_valid:
-            await member.edit(nick=nickname_query)
+            new_member = new_member_role in member.roles
             if new_member:
-                embed.add_field(name='New Member',
-                                value=nickname_query, inline=True)
+                await member.add_roles(emerald_role, verified_role)
+                await member.remove_roles(new_member_role)
+            if sapphire_role in member.roles:
+                await member.remove_roles(sapphire_role)
+                await member.add_roles(emerald_role)
+
+            await member.edit(nick=nickname_query)
+            embed = discord.Embed(title='RSN Update', color=discord.Color.orange())
+            if new_member:
+                embed.add_field(name='New Member', value=nickname_query, inline=True)
             else:
-                embed.add_field(name='Name', value=nickname, inline=True)
-                embed.add_field(name='Changed To', value=nickname_query,
-                                inline=True)
+                embed.add_field(name='Name', value=member.nick, inline=True)
+                embed.add_field(name='Changed To', value=nickname_query, inline=True)
+            print(f'Username(s) updated: {valid_users}')
             await rsn_log_channel.send(embed=embed)
+        except Exception as e:
+            log.exception(e)
+
         return None
 
     async def handle_new_pet_picture(message: discord.Message):
@@ -121,28 +94,27 @@ def main():
                                    str(message.author.display_name), str(
                                        attachment),
                                    message.created_at)
-    # best to put it in here
-    # The message handler for both new message and edits
 
     async def common_handle_message(message: discord.Message):
         if message.channel.id == settings.PET_CHANNEL:
             await handle_new_pet_picture(message)
-        if message.channel.id == settings.NEW_MEMBER_CHANNEL:
+        if message.channel.id == settings.NEW_MEMBER_CHANNEL or \
+                message.channel.id == 956498853283135531:
             channel = client.get_channel(684505358957281350)
             if message.content != 'Please enter a valid RSN.':
                 if len(message.content) > 12 and '|' not in message.content:
                     await channel.send('Please enter a valid RSN.')
-                    sleep(3)
-                    await message.delete()
                 else:
                     await update_nickname(message.author, message.content)
-                    await message.delete()
-            sleep(5)
-            await message.delete()
+            try:
+                sleep(2)
+                await message.delete()
+            except discord.NotFound:
+                pass
         if message.type == discord.message.MessageType.new_member:
             handle_new_member(message)
         text = message.content
-        log.info(f'handling message {text}')
+
         if text.startswith(settings.COMMAND_PREFIX) \
                 and text != settings.COMMAND_PREFIX:
             cmd_split = text[len(settings.COMMAND_PREFIX):].split()
@@ -154,7 +126,7 @@ def main():
                 raise
 
     def handle_new_member(message):
-        """Handles new member join"""
+        '''Handles new member join'''
         db.insert_members(message.author.name, 'New', message.author.id,
                           settings.ALL_USERS, 'New', None, False)
 
@@ -178,6 +150,22 @@ def main():
     @client.event
     async def on_message_edit(after):
         await common_handle_message(after)
+
+    @client.event
+    async def on_raw_reaction_add(payload):
+        guild = discord.utils.get(client.guilds, id=payload.guild_id)
+        member = discord.utils.get(guild.members, id=payload.user_id)
+        continents = {
+            '🇺🇸': 'America',
+            '🇪🇺': 'Europe',
+            '🇦🇺': 'Australia',
+        }
+        emoji = payload.emoji.name
+        if emoji in continents.keys() and member.nick is not None:
+            role_to_assign = discord.utils.get(guild.roles, name=continents[emoji])
+            message = await client.get_channel(payload.channel_id).fetch_message(payload.message_id)
+            await message.remove_reaction(emoji, member)
+            print(f'{member.nick} reacted with {emoji}')
 
     client.run(settings.BOT_TOKEN)
 

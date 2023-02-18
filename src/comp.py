@@ -39,8 +39,8 @@ class Competition:
 
     inflect_engine = inflect.engine()
     GROUP_ID = '332'
-    WOM_URL = 'https://api.wiseoldman.net/competitions/'
-    WOM_GROUP_URL = 'https://api.wiseoldman.net/groups/'
+    WOM_URL = 'https://api.wiseoldman.net/v2/competitions/'
+    WOM_GROUP_URL = 'https://api.wiseoldman.net/v2/groups/'
     IMAGE_URL = 'https://oldschool.runescape.wiki/images/'
 
     def __init__(self):
@@ -64,6 +64,7 @@ class Competition:
                 url = self.WOM_GROUP_URL + self.GROUP_ID + '/competitions'
                 log.info(f'Executing request to: {url}')
                 competitions = requests.get(url).json()
+                print(competitions[0]['id'])
                 if 'message' in competitions and competitions['message']\
                      == 'sorry, too many clients already':
                     raise TooManyClientsError(
@@ -115,9 +116,10 @@ class Competition:
         try:
             request = requests.get(wom_gained_url)
             response = request.json()
+            print(f'Get Leaderboards Response: {request.status_code}')
             for i in range(display_amount):
-                name = response['participants'][i]['displayName']
-                gained = response['participants'][i]['progress']['gained']
+                name = response['participations'][i]['player']['displayName']
+                gained = response['participations'][i]['progress']['gained']
                 ordinal_pos = self.get_oridinal(i+1)
                 results.append(LeaderboardEntry(ordinal_pos, name, gained))
         except requests.exceptions.RequestException as err:

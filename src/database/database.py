@@ -2,6 +2,7 @@
 import sqlite3
 
 try:
+    print('trying to connect to resources/data.sql')
     connection = sqlite3.connect('resources/data.sql')
 except FileNotFoundError:
     connection = sqlite3.connect('../resources/data.sql')
@@ -41,6 +42,7 @@ def create_table_payments():
 def create_table_members():
     """Create members table"""
     try:
+        print('Creating table: members')
         cursor.execute('''DROP TABLE IF EXISTS members''')
         cursor.execute('''CREATE TABLE members\
             (id text PRIMARY KEY, display_name text, top_role text, permissions text,\
@@ -52,7 +54,7 @@ def create_table_members():
         connection.commit()
 
 
-def insert_members(display_name, top_role, user_id, permissions, roles, \
+def insert_members(user_id, display_name, top_role, permissions, roles, \
     content, consultant):
     """Insert or replace new member"""
     try:
@@ -171,6 +173,7 @@ def update_member_roles(user_id, new_roles):
 def get_mentors_for_content():
     """Get list of mentors for given content_type"""
     try:
+        print('Get list of mentors for given content_type')
         sql = 'SELECT display_name, content FROM members WHERE roles LIKE \
             "%mentor%"'
         cursor.execute(sql)
@@ -252,10 +255,6 @@ def get_rankings():
 def insert_competitions(cur, value):
     """Insert into competitions"""
     cur.execute('INSERT INTO competitions VALUES (?)', [value])
-
-def get_token():
-    """Retrieve discord api token"""
-    return cursor.execute('SELECT token from discord').fetchall()[0][0]
 
 def get_current_competition():
     """Get current ongoing competition"""
