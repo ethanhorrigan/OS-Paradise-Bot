@@ -21,4 +21,4 @@ async def generate_embed(title, content, channel):
         embed.add_reaction(reaction)
 
 
-pvm_content_embed = generate_embed('PvM Content', pvm_content)
+# pvm_content_embed = generate_embed('PvM Content', pvm_content)
