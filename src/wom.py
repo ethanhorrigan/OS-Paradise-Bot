@@ -7,15 +7,17 @@ def wom_lookup_user(user):
     """Retrieve all user details from wise old man"""
     if len(user) < 12:
         response = 'Username too long, cannot be greater than 12 characters'
-    url = f'https://api.wiseoldman.net/players/username/{user}'
+    url = f'https://api.wiseoldman.net/v2/players/{user}'
     try:
         request = requests.get(url)
+        print(f'Lookup user response:{request.status_code}')
+        if request.status_code == 404:
+            response = f'{user} not found'
+            return None
         response = request.json()
-        if 'message' in response:
-            print(f'{user} not found')
-            response = None
-    except ValueError as err:
-        print(err.__class__)
+    except (requests.exceptions.RequestException, ValueError) as err:
+        print(f'Error occurred: {err}')
+        return None
     return response
 
 

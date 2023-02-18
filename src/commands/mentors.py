@@ -20,6 +20,25 @@ class Mentors(BaseCommand):
 
     async def handle(self, params, message, client):
         """Handle command"""
+
+        mentors_list = []
+        guild = discord.utils.get(client.guilds)
+        print(guild)
+        members = guild.members
+        for member in members:
+            # print(member.roles)
+            # print(type (member.roles))
+            for role in member.roles:
+                if 'Mentor' in role.name and role.name != 'Hygiene Mentor':
+                    if member.nick is not None:
+                        print(f'Nickname: {member.nick}')
+                        mentors_list.append(f'{member.nick}')
+                        print(f' - Role: {role.name}')
+                    else:
+                        print(f'member: {member}')
+
+
+
         all_mentors = db.get_mentors_for_content()
         embed = discord.Embed(title='Mentors',
                               description='All Mentors in OS Paradise!',
@@ -41,9 +60,11 @@ class Mentors(BaseCommand):
                 abbreviations = ', '.join(abbreviations)
                 content_list.append(abbreviations)
 
-        embed.add_field(name='Mentor', value='\n'.join(names_list),
+        embed.add_field(name='Mentor', value='\n'.join(mentors_list),
                         inline=True)
         embed.add_field(name='Content', value='\n'.join(content_list),
+                        inline=True)
+        embed.add_field(name='Timezone', value='\n'.join(content_list),
                         inline=True)
 
         embed.set_footer(text=message.author.name,

@@ -23,7 +23,7 @@ BOT_TOKEN = os.environ.get('DISCORD_KEY', \
 NOW_PLAYING = COMMAND_PREFIX + ' commands'
 # Base directory. Feel free to use it if you want.
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-WOM_URL = 'https://api.wiseoldman.net/competitions/'
+WOM_URL = 'https://api.wiseoldman.net/v2/competitions/'
 CURRENT_YEAR = datetime.now().year
 CURRENT_MONTH = datetime.now().month
 CURRENT_DAY = datetime.now().day
@@ -32,6 +32,7 @@ MOD_PERMISSIONS = ['Paladin / Resort Manager', 'Max Relax (Leader)',
                    'Deputy Owner/Admiral']
 PET_CHANNEL = 684833421834321920
 NEW_MEMBER_CHANNEL = 684505358957281350
+RSN_LOG_CHANNEL_ID = 685192535106125834
 NEW_MEMBER_ROLE_ID = 684866959371927734
 SAPPHIRE_ROLE_ID = 685925518394130500
 EMERALD_ROLE_ID = 684515748789616664
@@ -42,7 +43,7 @@ SLEEP = 15
 
 def wom_name_url(current_username):
     """Retruns all OSRS usernames for given OSRS username"""
-    return f'https://api.wiseoldman.net/players/username/ \
+    return f'https://api.wiseoldman.net/v2/players/username/ \
         {current_username}/names'
 
 
@@ -56,11 +57,6 @@ async def get_permissions(display_name):
     """Retrieve permissions avaiable to user"""
     permissions = await db.get_member_permissions(display_name)
     return permissions
-
-
-# def create_discord_codeblock(text):
-#     """Generates discord codeblock from given text"""
-#     return ''.join((CODE_BLOCK, text, CODE_BLOCK))
 
 
 def check_username_length(command):
