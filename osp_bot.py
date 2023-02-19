@@ -82,7 +82,7 @@ def main():
             print(f'Username(s) updated: {valid_users}')
             await rsn_log_channel.send(embed=embed)
         except Exception as e:
-            log.exception(e)
+            log.info(e)
 
         return None
 
@@ -171,12 +171,12 @@ def main():
 
 
 if __name__ == '__main__':
+    log.info(f'Starting OSP Server: {server_constants.RUN_SERVER}')
+    if server_constants.RUN_SERVER == 'True':
+        log.info('OSP Database connection established')
+
     if (settings.BOT_TOKEN is None) or (settings.BOT_TOKEN == ''):
         log.warn('Please set the BOT_TOKEN environment variable')
 
     if settings.BOT_TOKEN is not None:
         main()
-
-    log.info(f'Starting OSP Server: {server_constants.RUN_SERVER}')
-    if server_constants.RUN_SERVER == 'True':
-        osp_server.start()
