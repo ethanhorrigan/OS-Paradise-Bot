@@ -146,7 +146,7 @@ def main():
             '🇦🇺': 'Australia',
         }
         emoji = payload.emoji.name
-        if emoji in continents.keys() and member.nick is not None:
+        if emoji in continents and member.nick is not None:
             role_to_assign = discord.utils.get(guild.roles, \
                 name=continents[emoji])
             message = await client.get_channel(payload.channel_id)\
