@@ -8,7 +8,7 @@
 [MASTER]
 
 # Files or directories to be skipped. They should be base names, not paths.
-ignore=third_party
+ignore=third_party, branch_cleaner.py, __init__.py
 
 # Files or directories matching the regex patterns are skipped. The regex
 # matches against base names, not paths.
@@ -30,8 +30,6 @@ unsafe-load-any-extension=no
 
 
 [MESSAGES CONTROL]
-
-string-quote=single
 
 # Only show warnings with the listed confidence levels. Leave empty to show
 # all. Valid levels: HIGH, INFERENCE, INFERENCE_FAILURE, UNDEFINED
