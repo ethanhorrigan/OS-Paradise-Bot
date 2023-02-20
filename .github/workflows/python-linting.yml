@@ -14,7 +14,7 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
-        pip install pylint
+        pip install pylint==2.12.2
         pylint --version
     - name: Lint with pylint
       run: |
