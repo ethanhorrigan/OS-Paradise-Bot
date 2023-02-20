@@ -5,4 +5,5 @@ Flask==2.2.2
 humanfriendly==10.0
 inflect==5.4.0
 psycopg2==2.9.3
+pytest==7.2.1
 requests==2.25.1
