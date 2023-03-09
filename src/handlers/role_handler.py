@@ -17,20 +17,19 @@ async def update_new_member_role(client, member):
         if 'verified'.lower() in role.name.lower()]
 
     sapphire_role = discord.utils.get(osp_client.roles,
-                                      id=sapphire_role_id[0].id)
+                                      name=sapphire_role_id[0].name)
     new_member_role = discord.utils.get(osp_client.roles,
-                                        id=new_member_role_id[0].id)
+                                        name=new_member_role_id[0].name)
     emerald_role = discord.utils.get(osp_client.roles,
-                                     id=emerald_role_id[0].id)
+                                     name=emerald_role_id[0].name)
     verified_role = discord.utils.get(osp_client.roles,
-                                      id=verified_role_id[0].id)
-
+                                      name=verified_role_id[0].name)
 
     new_member = new_member_role in member.roles
     if new_member:
-        await member.add_roles(emerald_role[0].id, verified_role[0].id)
-        await member.remove_roles(new_member_role[0].id)
+        await member.add_roles(emerald_role, verified_role)
+        await member.remove_roles(new_member_role)
     if sapphire_role in member.roles:
-        await member.remove_roles(sapphire_role[0].id)
-        await member.add_roles(emerald_role[0].id)
+        await member.remove_roles(sapphire_role)
+        await member.add_roles(emerald_role)
     return new_member
