@@ -167,4 +167,7 @@ if __name__ == '__main__':
         log.warn('Please set the BOT_TOKEN environment variable')
 
     if settings.BOT_TOKEN is not None:
-        main()
+        try:
+            main()
+        except Exception as e:
+            log.error(f'Error starting OSP Bot: {e}')
