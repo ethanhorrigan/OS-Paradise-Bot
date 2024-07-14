@@ -45,8 +45,8 @@ def main():
             print('Logged in!', flush=True)
 
             display_current_comp_leaderboard_event.start(client)
-        except discord.errors.DiscordException as e:
-            log.error(f'Error initializing Discord bot: {e}')
+        except discord.errors.DiscordException as err:
+            log.error(f'Error initializing Discord bot: {err}')
 
     async def update_nickname(member: discord.message, nickname_query):
         log.info(f'Updating nickname for {member.nick}')
