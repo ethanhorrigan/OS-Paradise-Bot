@@ -1,5 +1,4 @@
 '''Main module'''
-from discord.enums import StickerFormatType
 import sys
 from time import sleep
 import discord
@@ -38,13 +37,16 @@ def main():
         this.running = True
 
         # Set the playing status
-        if settings.NOW_PLAYING:
-            print('Setting NP game', flush=True)
-            await client.change_presence(
-                activity=discord.Game(name=settings.NOW_PLAYING))
-        print('Logged in!', flush=True)
+        try:
+            if settings.NOW_PLAYING:
+                print('Setting NP game', flush=True)
+                await client.change_presence(
+                    activity=discord.Game(name=settings.NOW_PLAYING))
+            print('Logged in!', flush=True)
 
-        display_current_comp_leaderboard_event.start(client)
+            display_current_comp_leaderboard_event.start(client)
+        except discord.errors.DiscordException as e:
+            log.error(f'Error initializing Discord bot: {e}')
 
     async def update_nickname(member: discord.message, nickname_query):
         log.info(f'Updating nickname for {member.nick}')
