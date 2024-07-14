@@ -1,5 +1,11 @@
 '''Main module'''
 import sys
+print("Python version")
+print(sys.version)
+print("Version info.")
+print(sys.version_info)
+
+import sys
 from time import sleep
 import discord
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
