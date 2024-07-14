@@ -1,4 +1,5 @@
 '''Main module'''
+from discord.enums import StickerFormatType
 import sys
 from time import sleep
 import discord

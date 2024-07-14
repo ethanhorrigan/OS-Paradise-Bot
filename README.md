@@ -243,23 +243,5 @@ Parameters:
 Examples:
 - `await send_in_channel(client, "general", "Hey")` will send `Hey` to channel `#general`.
 
-## `try_upload_file`
-This method is a [coroutine](https://docs.python.org/3/library/asyncio-task.html#coroutine).
-
-Likewise, it is also likely that you will need to upload a picture or a file to some channel. This method allows you to do it with a single line of code, sending an error message if it fails to do it for any reason.
-
-Parameters:
-- **client**: The discord.py client for your bot.
-- **channel**: The discord.py channel object to send the file to.
-- **file_path**: The absolute path for the file you want to send.
-- **content**: The aditional message string to send alongside the file. Defaults to `None`.
-- **delete_after_send**: Whether or not to delete the file specified in `file_path` after sending it. It will be deleted even if the file cannot be successfully sent. Defaults to `False`.
-- **retries**: Number of times to retry sending the file if an error is encountered before giving up and sending an error message. Defaults to `3`.
-
-Examples:
-- `await try_upload_file(client, channel, "/home/agu/file.jpg", "My picture")` will send `file.jpg` to channel `channel` with the additional text `My picture`, and without deleting it afterwards,.
-
-- `await try_upload_file(client, channel, "/home/agu/file.jpg", delete_after_send=True)` will send `file.jpg` to channel `channel` without any caption and deleting the file afterwards.
-
 # License
 GPL-3.0
